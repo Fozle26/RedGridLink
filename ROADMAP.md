@@ -85,12 +85,16 @@ Enhanced team coordination for larger groups.
 
 ---
 
-## V2.0 — Intelligence Layer
+## V2.0 — Intelligence Layer + ATAK Interop
 
 **Target: Q4 2026**
 
-Terrain analysis and environmental awareness.
+Terrain analysis, environmental awareness, and Cursor on Target (CoT) interoperability.
 
+- [ ] ATAK interoperability layer (CoT XML message format — send/receive)
+- [ ] CoT SA (Situational Awareness) message support (position, callsign, team)
+- [ ] CoT bridge: translate Field Link CRDT positions to/from CoT events on local network
+- [ ] Multicast UDP listener for CoT traffic on shared WiFi/mesh radio networks
 - [ ] Elevation profile along planned routes (from DEM data)
 - [ ] Slope and aspect analysis for terrain assessment
 - [ ] Line-of-sight calculator between two MGRS positions
@@ -146,7 +150,6 @@ Optional cloud features for teams that need them (offline-first principles prese
 External hardware and sensor support.
 
 - [ ] Garmin inReach integration (satellite messaging + position relay)
-- [ ] ATAK interoperability layer (CoT message format support)
 - [ ] External GPS receiver support (Bluetooth NMEA devices)
 - [ ] Barometric altimeter calibration (phone sensor fusion)
 - [ ] Heart rate monitor integration for SAR team health monitoring
