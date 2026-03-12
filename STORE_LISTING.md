@@ -4,7 +4,7 @@
 Red Grid Link
 
 ## Subtitle (iOS, max 30 chars)
-Offline MGRS Nav & Team Sync
+Offline Team Tracker & MGRS Nav
 
 ## App Icon
 Source: `docs/images/icon_1024.png` (1024x1024)
@@ -14,13 +14,15 @@ All iOS and Android sizes auto-generated in `ios/Runner/Assets.xcassets/AppIcon.
 Navigation (primary), Utilities (secondary)
 
 ## Short Description (Play Store, max 80 chars)
-Offline MGRS navigation with proximity team sync -- no cell service needed.
+ATAK alternative: encrypted Bluetooth team tracking + offline MGRS maps.
 
 ## Full Description
 
 Your team. Your grid. No cell towers required.
 
-Red Grid Link is an offline-first, MGRS-native coordination platform for small teams (2-8 people) operating beyond reliable cell service. It combines precision land navigation with Field Link -- zero-config proximity sync over Bluetooth and WiFi Direct. No accounts. No servers. No complexity.
+Inspired by military blue force tracking systems like ATAK, Red Grid Link brings encrypted team coordination to civilian and professional teams -- without cell towers, accounts, or servers. Track your team's positions in real time over Bluetooth, navigate with military-grade MGRS precision, and operate completely offline.
+
+Red Grid Link is an offline-first, MGRS-native coordination platform for small teams (2-8 people) operating beyond reliable cell service. It combines precision land navigation with Field Link -- zero-config proximity sync over Bluetooth and WiFi Direct. Lightweight where ATAK is complex. Cross-platform where ATAK is Android-only. Zero infrastructure where ATAK requires TAK Server.
 
 FIELD LINK -- TEAM SYNC WITHOUT INFRASTRUCTURE:
 Field Link is what sets Red Grid Link apart. Devices within proximity automatically discover each other and share encrypted position and marker data -- no internet, no configuration, no pairing codes. Just turn it on and your team appears on the map.
@@ -104,10 +106,10 @@ PRICING:
 - Lifetime ($99.99): Pro+Link forever, one-time purchase
 
 ## Promotional Text (iOS, max 170 chars)
-Offline MGRS navigation + encrypted BLE team sync for 2-8 people. No cell towers, no accounts, no servers. 11 tactical tools, 4 display themes, zero tracking.
+Lightweight ATAK alternative: encrypted Bluetooth team tracking + offline MGRS maps. No servers, no accounts. Built for SAR, hunting, and backcountry teams.
 
 ## Keywords (iOS, max 100 chars)
-mgrs,tactical,navigation,offline,team,sync,BLE,military,grid,SAR,hunting,backcountry,map,GPS,compass
+ATAK,blue force tracking,team tracker,offline map,mgrs,tactical,military,gps,sar,hunting,mesh,topo
 
 ## What's New (v1.2.1)
 Red Grid Link v1.2.1 -- reliability and navigation update:
