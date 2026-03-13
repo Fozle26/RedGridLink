@@ -8,6 +8,8 @@ import '../../../core/utils/haptics.dart';
 import '../../../providers/iap_provider.dart';
 import '../../../providers/theme_provider.dart';
 import '../../../services/iap/iap_service.dart';
+import '../../screens/settings/widgets/privacy_screen.dart';
+import '../../screens/settings/widgets/terms_screen.dart';
 
 /// Shows the paywall bottom sheet when a user taps a pro-gated feature.
 ///
@@ -201,6 +203,29 @@ class _PaywallSheet extends ConsumerWidget {
 
                       const SizedBox(height: 20),
 
+                      // Subscription auto-renewal disclosure.
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        child: Text(
+                          'Subscriptions auto-renew unless cancelled at '
+                          'least 24 hours before the end of the current '
+                          'period. Your account will be charged for renewal '
+                          'within 24 hours prior to the end of the current '
+                          'period. Manage or cancel subscriptions in your '
+                          'device\u2019s account settings.',
+                          style: TacticalTextStyles.dim(colors).copyWith(
+                            fontSize: 10,
+                            height: 1.4,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
                       // Restore purchases link.
                       GestureDetector(
                         onTap: isProcessing
@@ -224,6 +249,65 @@ class _PaywallSheet extends ConsumerWidget {
                             ),
                           ),
                         ),
+                      ),
+
+                      // Terms of Use & Privacy Policy links.
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const TermsScreen(),
+                              ),
+                            ),
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                minHeight: AppConstants.minTouchTarget,
+                              ),
+                              alignment: Alignment.center,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                'Terms of Use',
+                                style: TacticalTextStyles.caption(colors)
+                                    .copyWith(
+                                  color: colors.accent,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: colors.accent,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '\u2022',
+                            style: TacticalTextStyles.dim(colors),
+                          ),
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const PrivacyScreen(),
+                              ),
+                            ),
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                minHeight: AppConstants.minTouchTarget,
+                              ),
+                              alignment: Alignment.center,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                'Privacy Policy',
+                                style: TacticalTextStyles.caption(colors)
+                                    .copyWith(
+                                  color: colors.accent,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: colors.accent,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
 
                       // Close button.

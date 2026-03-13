@@ -6,6 +6,7 @@ import '../../../../core/theme/tactical_colors.dart';
 import '../../../../core/theme/tactical_text_styles.dart';
 import '../../../../providers/theme_provider.dart';
 import '../../../common/widgets/section_header.dart';
+import 'privacy_screen.dart';
 import 'terms_screen.dart';
 
 /// Full About screen for Red Grid Link.
@@ -162,23 +163,11 @@ class AboutScreen extends ConsumerWidget {
                   label: 'Privacy Policy',
                   icon: Icons.privacy_tip,
                   colors: colors,
-                  onTap: () {
-                    // In a full implementation, this would open the
-                    // privacy policy URL or a dedicated screen.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text(
-                          'Privacy policy at redgridlink.com/privacy',
-                          style: TextStyle(
-                            fontFamily: 'monospace',
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                        backgroundColor: colors.card,
-                      ),
-                    );
-                  },
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const PrivacyScreen(),
+                    ),
+                  ),
                 ),
                 Divider(color: colors.border2),
                 _LinkRow(

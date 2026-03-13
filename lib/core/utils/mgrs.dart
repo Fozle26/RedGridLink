@@ -278,7 +278,82 @@ String formatUTM(double lat, double lon) {
     const double k0 = 0.9996;
     const double ep2 = e2 / (1 - e2);
     final double lonOrigin = ((zone - 1) * 6 - 180 + 3) * (pi / 180);
+    final double e1 = (1 - sqrt(1 - e2)) / (1 + sqrt(1 - e2));
 
+    // Try the initial northing and up to ±2,000,000m adjustments to find the
+    // correct 2,000,000m cycle. The decoded latitude must fall within the
+    // input band's latitude range, otherwise the cycle is wrong.
+    const bandLetters = 'CDEFGHJKLMNPQRSTUVWX';
+    final bandIdx = bandLetters.indexOf(band.toUpperCase());
+
+    for (final offset in [0.0, 2000000.0, -2000000.0]) {
+      final candidateNorthing = fullNorthing + offset;
+
+      final double mVal = candidateNorthing / k0;
+      final double mu = mVal /
+          (a *
+              (1 -
+                  e2 / 4 -
+                  (3 * pow(e2, 2).toDouble()) / 64 -
+                  (5 * pow(e2, 3).toDouble()) / 256));
+
+      final double phi1 = mu +
+          (3 * e1) / 2 * sin(2 * mu) +
+          (27 * pow(e1, 2).toDouble()) / 16 * sin(4 * mu) +
+          (151 * pow(e1, 3).toDouble()) / 96 * sin(6 * mu);
+
+      final double N1 = a / sqrt(1 - e2 * pow(sin(phi1), 2).toDouble());
+      final double T1 = pow(tan(phi1), 2).toDouble();
+      final double C1 = ep2 * pow(cos(phi1), 2).toDouble();
+      final double R1 = (a * (1 - e2)) /
+          pow(1 - e2 * pow(sin(phi1), 2).toDouble(), 1.5).toDouble();
+      final double D = (fullEasting - 500000) / (N1 * k0);
+
+      final double lat2 = phi1 -
+          (N1 * tan(phi1)) /
+              R1 *
+              (pow(D, 2).toDouble() / 2 -
+                  ((5 +
+                              3 * T1 +
+                              10 * C1 -
+                              4 * pow(C1, 2).toDouble() -
+                              9 * ep2) *
+                          pow(D, 4).toDouble()) /
+                      24 +
+                  ((61 +
+                              90 * T1 +
+                              298 * C1 +
+                              45 * pow(T1, 2).toDouble() -
+                              252 * ep2 -
+                              3 * pow(C1, 2).toDouble()) *
+                          pow(D, 6).toDouble()) /
+                      720);
+
+      final double lon2 = lonOrigin +
+          (D -
+                  ((1 + 2 * T1 + C1) * pow(D, 3).toDouble()) / 6 +
+                  ((5 -
+                              2 * C1 +
+                              28 * T1 -
+                              3 * pow(C1, 2).toDouble() +
+                              8 * ep2 +
+                              24 * pow(T1, 2).toDouble()) *
+                          pow(D, 5).toDouble()) /
+                      120) /
+              cos(phi1);
+
+      final double latDeg = (lat2 * 180) / pi;
+      final double lonDeg = (lon2 * 180) / pi;
+
+      // Validate: does the decoded latitude fall within the input band?
+      final decodedLetter = _getZoneLetter(latDeg);
+      if (decodedLetter != null &&
+          bandLetters.indexOf(decodedLetter) == bandIdx) {
+        return (lat: latDeg, lon: lonDeg);
+      }
+    }
+
+    // Fallback: return the result from the original (unshifted) northing.
     final double mVal = fullNorthing / k0;
     final double mu = mVal /
         (a *
@@ -286,7 +361,6 @@ String formatUTM(double lat, double lon) {
                 e2 / 4 -
                 (3 * pow(e2, 2).toDouble()) / 64 -
                 (5 * pow(e2, 3).toDouble()) / 256));
-    final double e1 = (1 - sqrt(1 - e2)) / (1 + sqrt(1 - e2));
 
     final double phi1 = mu +
         (3 * e1) / 2 * sin(2 * mu) +

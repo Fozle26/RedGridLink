@@ -24,12 +24,18 @@ import 'package:latlong2/latlong.dart';
 import 'package:red_grid_link/core/constants/map_constants.dart';
 import 'package:red_grid_link/core/theme/tactical_colors.dart';
 import 'package:red_grid_link/data/models/map_region.dart';
+import 'package:red_grid_link/core/utils/crypto_utils.dart';
+import 'package:red_grid_link/core/utils/haptics.dart';
+import 'package:red_grid_link/core/utils/mgrs.dart';
+import 'package:red_grid_link/data/models/waypoint.dart';
 import 'package:red_grid_link/providers/field_link_provider.dart';
 import 'package:red_grid_link/providers/location_provider.dart';
 import 'package:red_grid_link/providers/map_provider.dart';
 import 'package:red_grid_link/providers/mode_provider.dart';
+import 'package:red_grid_link/providers/theme_provider.dart';
 import 'package:red_grid_link/services/map/mgrs_grid_overlay.dart';
 import 'package:red_grid_link/services/map/tile_manager.dart';
+import 'package:red_grid_link/ui/common/dialogs/text_input_dialog.dart';
 
 import 'layers/annotation_layer.dart';
 import 'layers/ghost_markers_layer.dart';
@@ -114,7 +120,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               onTap: isDrawing
                   ? (tapPos, latLng) =>
                       _onMapTapWhileDrawing(latLng, drawingMode)
-                  : null,
+                  : (tapPos, latLng) => _onMapTapWaypoint(latLng),
             ),
             children: [
               // Tile layer (online or offline)
@@ -300,6 +306,40 @@ class _MapScreenState extends ConsumerState<MapScreen> {
       // For polylines/polygons, accumulate points
       ref.read(drawingPointsProvider.notifier).state = [...current, point];
     }
+  }
+
+  /// Handle map tap when NOT in drawing mode — create a waypoint.
+  void _onMapTapWaypoint(LatLng point) async {
+    tapMedium();
+
+    final colors = ref.read(currentThemeProvider);
+    if (!mounted) return;
+
+    final name = await showTextInputDialog(
+      context,
+      title: 'Name Waypoint',
+      hintText: 'e.g. Rally Point',
+      colors: colors,
+    );
+
+    if (name == null || name.isEmpty || !mounted) return;
+
+    final mgrsRaw = toMGRS(point.latitude, point.longitude);
+    final mgrsFormatted = formatMGRS(mgrsRaw);
+
+    final waypoint = Waypoint(
+      id: generateDeviceId(),
+      name: name,
+      lat: point.latitude,
+      lon: point.longitude,
+      mgrs: mgrsRaw,
+      mgrsFormatted: mgrsFormatted,
+      createdAt: DateTime.now(),
+    );
+
+    ref.read(waypointListProvider.notifier).add(waypoint);
+    ref.read(activeWaypointProvider.notifier).state = waypoint;
+    notifySuccess();
   }
 
   /// Auto-finish when a marker point is placed.

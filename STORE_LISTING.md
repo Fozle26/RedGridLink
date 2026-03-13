@@ -105,11 +105,24 @@ PRICING:
 - Team ($199.99/yr): Pro+Link for 8 seats
 - Lifetime ($99.99): Pro+Link forever, one-time purchase
 
+Subscriptions auto-renew unless cancelled at least 24 hours before the end of the current period. Payment will be charged to your Apple ID account at confirmation of purchase. Manage or cancel subscriptions in your device's Settings > Apple ID > Subscriptions.
+
+Terms of Use: https://redgridtactical.github.io/RedGridLink/terms.html
+Privacy Policy: https://redgridtactical.github.io/RedGridLink/privacy.html
+
 ## Promotional Text (iOS, max 170 chars)
 Lightweight ATAK alternative: encrypted Bluetooth team tracking + offline MGRS maps. No servers, no accounts. Built for SAR, hunting, and backcountry teams.
 
 ## Keywords (iOS, max 100 chars)
 ATAK,blue force tracking,team tracker,offline map,mgrs,tactical,military,gps,sar,hunting,mesh,topo
+
+## What's New (v1.2.2)
+Red Grid Link v1.2.2 -- navigation accuracy and usability update:
+- Map tap-to-waypoint: tap any point on the map to name and save a waypoint
+- Fixed MGRS grid zone bug: coordinates near band boundaries no longer shift to incorrect zones
+- Dead reckoning compass mode: toggle between manual heading entry and live compass heading
+- Terms of Use and Privacy Policy accessible from subscription screen
+- Subscription auto-renewal disclosure in purchase flow
 
 ## What's New (v1.2.1)
 Red Grid Link v1.2.1 -- reliability and navigation update:
@@ -163,7 +176,10 @@ Red Grid Link v1.0 -- initial release:
 - No server communication required for any feature
 
 ## Privacy URL
-https://github.com/RedGridMGRS/RedGridLink/blob/master/PRIVACY.md
+https://redgridtactical.github.io/RedGridLink/privacy.html
+
+## Terms of Use (EULA) URL
+https://redgridtactical.github.io/RedGridLink/terms.html
 
 ## Support URL
 https://github.com/RedGridMGRS/RedGridLink/issues

@@ -35,6 +35,7 @@ class _DeadReckoningToolState extends ConsumerState<DeadReckoningTool> {
   ({double lat, double lon, String mgrs, String mgrsFormatted})? _result;
   double? _bearingBack;
   String? _error;
+  bool _useCompass = false;
 
   @override
   void dispose() {
@@ -54,16 +55,27 @@ class _DeadReckoningToolState extends ConsumerState<DeadReckoningTool> {
       return;
     }
 
-    final heading = double.tryParse(_headingController.text);
-    final distance = double.tryParse(_distanceController.text);
-
-    if (heading == null || heading < 0 || heading > 360) {
-      setState(() {
-        _error = 'Enter a valid heading (0-360)';
-        _result = null;
-      });
-      return;
+    final double? heading;
+    if (_useCompass) {
+      heading = ref.read(compassHeadingProvider);
+      if (heading == null) {
+        setState(() {
+          _error = 'No compass data available';
+          _result = null;
+        });
+        return;
+      }
+    } else {
+      heading = double.tryParse(_headingController.text);
+      if (heading == null || heading < 0 || heading > 360) {
+        setState(() {
+          _error = 'Enter a valid heading (0-360)';
+          _result = null;
+        });
+        return;
+      }
     }
+    final distance = double.tryParse(_distanceController.text);
     if (distance == null || distance <= 0) {
       setState(() {
         _error = 'Enter a valid distance (> 0)';
@@ -116,13 +128,24 @@ class _DeadReckoningToolState extends ConsumerState<DeadReckoningTool> {
             SectionHeader(title: 'Inputs', colors: colors),
             const SizedBox(height: 12),
 
-            // Heading input
-            _TacticalTextField(
-              controller: _headingController,
-              label: 'HEADING (degrees)',
-              hint: '0 - 360',
+            // Heading source toggle
+            _HeadingSourceToggle(
+              useCompass: _useCompass,
               colors: colors,
+              onChanged: (value) => setState(() => _useCompass = value),
             ),
+            const SizedBox(height: 12),
+
+            // Heading input — manual or compass display
+            if (_useCompass)
+              _CompassHeadingDisplay(colors: colors)
+            else
+              _TacticalTextField(
+                controller: _headingController,
+                label: 'HEADING (degrees)',
+                hint: '0 - 360',
+                colors: colors,
+              ),
             const SizedBox(height: 12),
 
             // Distance input
@@ -290,5 +313,165 @@ class _TacticalTextField extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+/// Toggle between manual heading entry and live compass heading.
+class _HeadingSourceToggle extends StatelessWidget {
+  const _HeadingSourceToggle({
+    required this.useCompass,
+    required this.colors,
+    required this.onChanged,
+  });
+
+  final bool useCompass;
+  final TacticalColorScheme colors;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              tapLight();
+              onChanged(false);
+            },
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                color: !useCompass ? colors.accent : colors.card2,
+                borderRadius: const BorderRadius.horizontal(
+                  left: Radius.circular(8),
+                ),
+                border: Border.all(
+                  color: !useCompass ? colors.accent : colors.border,
+                ),
+              ),
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.edit,
+                    size: 14,
+                    color: !useCompass ? Colors.white : colors.text3,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'MANUAL',
+                    style: TacticalTextStyles.caption(colors).copyWith(
+                      color: !useCompass ? Colors.white : colors.text3,
+                      fontWeight:
+                          !useCompass ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              tapLight();
+              onChanged(true);
+            },
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                color: useCompass ? colors.accent : colors.card2,
+                borderRadius: const BorderRadius.horizontal(
+                  right: Radius.circular(8),
+                ),
+                border: Border.all(
+                  color: useCompass ? colors.accent : colors.border,
+                ),
+              ),
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.explore,
+                    size: 14,
+                    color: useCompass ? Colors.white : colors.text3,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'COMPASS',
+                    style: TacticalTextStyles.caption(colors).copyWith(
+                      color: useCompass ? Colors.white : colors.text3,
+                      fontWeight:
+                          useCompass ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Displays the live compass heading from the magnetometer.
+class _CompassHeadingDisplay extends ConsumerWidget {
+  const _CompassHeadingDisplay({required this.colors});
+
+  final TacticalColorScheme colors;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final heading = ref.watch(compassHeadingProvider);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('COMPASS HEADING', style: TacticalTextStyles.label(colors)),
+        const SizedBox(height: 4),
+        Container(
+          height: 52,
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: colors.card2,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: colors.accent, width: 2),
+          ),
+          alignment: Alignment.centerLeft,
+          child: Row(
+            children: [
+              Icon(Icons.explore, size: 20, color: colors.accent),
+              const SizedBox(width: 12),
+              Text(
+                heading != null
+                    ? '${heading.toStringAsFixed(0)}\u00B0'
+                    : 'NO COMPASS DATA',
+                style: TacticalTextStyles.value(colors).copyWith(
+                  color: heading != null ? colors.text : colors.text4,
+                ),
+              ),
+              const Spacer(),
+              if (heading != null)
+                Text(
+                  _cardinalDirection(heading),
+                  style: TacticalTextStyles.caption(colors).copyWith(
+                    color: colors.accent,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _cardinalDirection(double heading) {
+    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    final index = ((heading + 22.5) / 45).floor() % 8;
+    return directions[index];
   }
 }
