@@ -17,6 +17,7 @@ import 'package:red_grid_link/core/theme/tactical_colors.dart';
 import 'package:red_grid_link/providers/map_provider.dart';
 import 'package:red_grid_link/services/map/tile_manager.dart';
 
+import 'goto_grid_dialog.dart';
 import 'map_download_sheet.dart';
 
 class MapControls extends ConsumerWidget {
@@ -88,6 +89,25 @@ class MapControls extends ConsumerWidget {
             tooltip: showGrid ? 'Hide MGRS grid' : 'Show MGRS grid',
           ),
           const SizedBox(height: 6),
+
+          // Go to MGRS coordinate
+          _ControlButton(
+            icon: Icons.pin_drop_outlined,
+            colors: colors,
+            onPressed: () async {
+              final target = await showGotoGridDialog(
+                context,
+                colors: colors,
+              );
+              if (target != null) {
+                controllerService.stopFollowing();
+                ref.read(isFollowingProvider.notifier).state = false;
+                controllerService.centerOn(target, zoom: 14);
+              }
+            },
+            tooltip: 'Go to MGRS coordinate',
+          ),
+          const SizedBox(height: 14),
 
           // Toggle map source (cycles: OSM → TOPO → OFFLINE if regions exist)
           _ControlButton(

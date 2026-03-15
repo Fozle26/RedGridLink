@@ -18,20 +18,25 @@ void main() {
       expect(result, contains('Juliet'));
     });
 
-    test('segments are separated by periods', () {
+    test('segments are separated by period-pause markers', () {
       final result = mgrsToNATO('18S UJ 23456 78901');
       expect(result, isNotNull);
       // Should have 4 segments: GZD, grid square, easting, northing
-      final segments = result!.split('. ');
+      final segments = result!.split('. ... ');
       expect(segments.length, equals(4));
     });
 
-    test('digits within segments are separated by commas', () {
+    test('GZD segment is labeled with Grid prefix', () {
       final result = mgrsToNATO('18S UJ 23456 78901');
       expect(result, isNotNull);
-      // First segment is GZD: "one, eight, Sierra"
-      final segments = result!.split('. ');
-      expect(segments[0], contains(', '));
+      expect(result!, startsWith('Grid:'));
+    });
+
+    test('easting and northing segments are labeled', () {
+      final result = mgrsToNATO('18S UJ 23456 78901');
+      expect(result, isNotNull);
+      expect(result!, contains('Easting:'));
+      expect(result, contains('Northing:'));
     });
   });
 
@@ -233,7 +238,7 @@ void main() {
       final result = mgrsToNATO('18S UJ 09876 12345');
       expect(result, isNotNull);
       // The third segment (easting) should contain these
-      final segments = result!.split('. ');
+      final segments = result!.split('. ... ');
       final eastingSegment = segments[2];
       expect(eastingSegment, contains('zero'));
       expect(eastingSegment, contains('niner'));

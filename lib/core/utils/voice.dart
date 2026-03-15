@@ -25,7 +25,9 @@ FlutterTts _getTts() {
     _tts = FlutterTts();
     _tts!.setLanguage('en-US');
     _tts!.setPitch(0.95);
-    _tts!.setSpeechRate(0.85);
+    // Rate 0.45 is a deliberate, clear pace — like a radio operator
+    // reading back a grid reference. 0.85 was far too fast to follow.
+    _tts!.setSpeechRate(0.45);
   }
   return _tts!;
 }
@@ -46,31 +48,45 @@ String? mgrsToNATO(String? mgrs) {
 
   final segments = <String>[];
 
-  // Grid Zone Designator
+  // Grid Zone Designator — e.g. "one eight Sierra"
   final gzdSpoken = gzd.split('').map((ch) {
     if (RegExp(r'[A-Za-z]').hasMatch(ch)) {
       return natoAlpha[ch.toUpperCase()] ?? ch;
     }
     return natoDigit[ch] ?? ch;
-  }).join(', ');
-  segments.add(gzdSpoken);
+  }).join(' ... ');
+  segments.add('Grid: $gzdSpoken');
 
-  // 100km Square ID
+  // 100km Square ID — e.g. "Uniform Juliet"
   final sqSpoken = sq.split('').map((ch) {
     return natoAlpha[ch.toUpperCase()] ?? ch;
-  }).join(', ');
+  }).join(' ... ');
   segments.add(sqSpoken);
 
-  // Numeric portion — read digit by digit
+  // Numeric portion — read digit by digit with pauses
   final numParts = numerics.split(RegExp(r'\s+'));
-  for (final part in numParts) {
-    final digitSpoken = part.split('').map((ch) {
+  if (numParts.length >= 2) {
+    // Easting then Northing with labeled pauses
+    final eastSpoken = numParts[0].split('').map((ch) {
       return natoDigit[ch] ?? ch;
-    }).join(', ');
-    segments.add(digitSpoken);
+    }).join(' ... ');
+    segments.add('Easting: $eastSpoken');
+
+    final northSpoken = numParts[1].split('').map((ch) {
+      return natoDigit[ch] ?? ch;
+    }).join(' ... ');
+    segments.add('Northing: $northSpoken');
+  } else {
+    for (final part in numParts) {
+      final digitSpoken = part.split('').map((ch) {
+        return natoDigit[ch] ?? ch;
+      }).join(' ... ');
+      segments.add(digitSpoken);
+    }
   }
 
-  return segments.join('. ');
+  // Triple period creates a natural TTS pause between segments
+  return segments.join('. ... ');
 }
 
 /// Speak MGRS coordinate using NATO phonetics.
