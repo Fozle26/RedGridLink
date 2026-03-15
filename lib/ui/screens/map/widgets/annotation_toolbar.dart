@@ -69,13 +69,17 @@ class AnnotationToolbar extends ConsumerWidget {
                       color: colors.accent,
                     ),
                     const SizedBox(width: 6),
-                    Text(
-                      _modeLabel(drawingMode),
-                      style: TextStyle(
-                        fontFamily: 'monospace',
-                        fontSize: 10,
-                        color: colors.accent,
-                        letterSpacing: 0.5,
+                    Flexible(
+                      child: Text(
+                        _modeLabel(drawingMode),
+                        style: TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 10,
+                          color: colors.accent,
+                          letterSpacing: 0.5,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                     const Spacer(),

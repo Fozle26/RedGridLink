@@ -88,6 +88,7 @@ class _ModeChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         child: Container(
           alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           constraints: const BoxConstraints(
             minHeight: AppConstants.minTouchTarget,
           ),
@@ -112,8 +113,10 @@ class _ModeChip extends StatelessWidget {
                     color: isSelected ? Colors.white : colors.text2,
                     fontWeight:
                         isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontSize: 10,
                   ),
                   overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ),
             ],

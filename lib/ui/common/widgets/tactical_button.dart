@@ -75,12 +75,18 @@ class TacticalButton extends StatelessWidget {
                 children: [
                   if (icon != null) ...[
                     Icon(icon, color: fgColor, size: 20),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 6),
                   ],
-                  Text(
-                    label.toUpperCase(),
-                    style: TacticalTextStyles.buttonText(colors).copyWith(
-                      color: fgColor,
+                  Flexible(
+                    child: Text(
+                      label.toUpperCase(),
+                      style: TacticalTextStyles.buttonText(colors).copyWith(
+                        color: fgColor,
+                        fontSize: isCompact ? 11 : 14,
+                        letterSpacing: isCompact ? 0.5 : 1.5,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
                 ],

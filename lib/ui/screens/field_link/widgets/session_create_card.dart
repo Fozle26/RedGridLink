@@ -367,13 +367,19 @@ class _SecurityModeSelector extends StatelessWidget {
                           color: isSelected ? Colors.white : colors.text3,
                         ),
                         const SizedBox(width: 4),
-                        Text(
-                          mode.name.toUpperCase(),
-                          style: TacticalTextStyles.caption(colors).copyWith(
-                            color: isSelected ? Colors.white : colors.text2,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                        Flexible(
+                          child: Text(
+                            mode.name.toUpperCase(),
+                            style:
+                                TacticalTextStyles.caption(colors).copyWith(
+                              color: isSelected ? Colors.white : colors.text2,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              fontSize: 10,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                         ),
                       ],
